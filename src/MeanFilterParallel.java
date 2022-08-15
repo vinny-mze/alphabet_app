@@ -41,8 +41,9 @@ public class MeanFilterParallel {
                 this.sLength = sLength;
             }
 
-    
-        private Integer[][] meanFilter() {
+    //Create 2D array for image pixels and return it as an array of integers
+        private Integer[][] meanFilter() 
+         {
 
             int xWidth = xHigh - xLow;
             int xHeight = yHigh - yLow;
@@ -53,7 +54,8 @@ public class MeanFilterParallel {
             Integer[][] pixels = new Integer[xHeight][xWidth];
 
             int yIndex = 0;
-
+            
+            //Seperate the colours of the array
             for (int y = yLow; y < yHigh; y++) {
                 int xIndex = 0;
                 for (int x = xLow; x < xHigh; x++) {
@@ -79,7 +81,7 @@ public class MeanFilterParallel {
                         }
                     }
 
-                    
+                    //Calculate the average mean of the RGB colours
                     int avr = (int) (red / blocks);
                     int avg = (int) (green / blocks);
                     int avb = (int) (blue / blocks);
@@ -97,6 +99,8 @@ public class MeanFilterParallel {
         }
 
         @Override
+        
+        //Divide and conquer implemantation of parallel algorithm
         protected Integer[][] compute() {
 
             if ((xHigh - xLow) * (yHigh - yLow) <= maxThresh) {
@@ -175,7 +179,7 @@ public class MeanFilterParallel {
 
     }
 
-    
+    //main method  to output the images
     public static void main(String args[]) throws IOException {
 
         BufferedImage img = ImageIO.read(new File("images/", args[0]));
@@ -191,7 +195,7 @@ public class MeanFilterParallel {
 
         MeanFilter meanFilter = new MeanFilter(0, 0, xLength, yLength, Integer.parseInt(args[2]), colourArray, true);
 
-        // Create the Thread Pool
+        // Create Thread Pool
         int threadNum = Runtime.getRuntime().availableProcessors();
         ForkJoinPool forkJoinPool = new ForkJoinPool(threadNum);
 
@@ -204,7 +208,7 @@ public class MeanFilterParallel {
         File output = new File("filtered_images/", args[1]);
         BufferedImage imageOut = new BufferedImage(xLength, yLength, BufferedImage.TYPE_INT_RGB);
 
-        // Set every pixel in place
+        // Assigning the pixels to into position to achieve filtering
         for (int x = 0; x < xLength; x++) {
             for (int y = 0; y < yLength; y++) {
                 int colour = pixels[y][x];

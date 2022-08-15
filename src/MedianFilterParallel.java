@@ -18,6 +18,7 @@ public class MedianFilterParallel {
         private boolean sLength;
         private int maxThresh = 10000;
         
+        //Constructor
         public MedianFilter
            (
                 int xLow,
@@ -37,7 +38,7 @@ public class MedianFilterParallel {
                 this.colourArray = colourArray;
                this.sLength = sLength;
         }
-
+ //Creating a 2D array for the pixels of the images
         private Integer[][] medianFilter() {
             int xWidth = xHigh - xLow;
             int xHeight = yHigh - yLow;
@@ -104,7 +105,7 @@ public class MedianFilterParallel {
 
             return pixels;
         }
-
+//Divide and conquer implemantation of parallel algorithm
       
         private static Integer[][] merge(Integer[][] sectionA, Integer[][] sectionB, boolean sLength) {
 
@@ -150,6 +151,8 @@ public class MedianFilterParallel {
         }
 
         @Override
+        
+        //Divide and conquer implemantation of parallel algorithm
         protected Integer[][] compute() {
             if ((xHigh - xLow) * (yHigh - yLow) <= maxThresh) {
             
@@ -157,7 +160,7 @@ public class MedianFilterParallel {
              } 
             else {
 
-               
+               //Finding the median of the pixels
                 if (sLength) {
 
                     int mid = xLow + (xHigh - xLow) / 2;
@@ -184,7 +187,8 @@ public class MedianFilterParallel {
         }
 
     }
-
+    
+   // main method
     public static void main(String args[]) throws IOException {
 
         String path = args[0];
@@ -214,7 +218,7 @@ public class MedianFilterParallel {
         File output = new File("filtered_images/", args[1]);
         BufferedImage outImage = new BufferedImage(xLength, yLength, BufferedImage.TYPE_INT_RGB);
 
-        // Set every pixel in place
+        // Assigning positions to picels to achieve filtering
         for (int x = 0; x < xLength; x++) {
             for (int y = 0; y < yLength; y++) {
                 int colour = pixels[y][x];
